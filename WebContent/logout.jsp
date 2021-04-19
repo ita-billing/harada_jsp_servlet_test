@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=Windows-31J" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>
@@ -8,14 +8,14 @@
 <br>
 
 <%
-//ƒZƒbƒVƒ‡ƒ“I—¹
+//ã‚»ãƒƒã‚·ãƒ§ãƒ³çµ‚äº†
 session.invalidate();
 %>
 
 <br><br>
-ƒƒOƒAƒEƒg‚µ‚Ü‚µ‚½<br><br>
+ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã—ã¾ã—ãŸ<br><br>
 
-<a href="/jsp_servlet_test/index.jsp">ƒƒOƒCƒ“ƒy[ƒW‚É–ß‚é</a>
+<a href="/jsp_servlet_test/index.jsp">ãƒ­ã‚°ã‚¤ãƒ³ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹</a>
 <br><br><br><br>
 
 </body>
