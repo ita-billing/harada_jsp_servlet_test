@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>エラーページ</title>
+<title>処理結果</title>
 </head>
 <body>
 	<br>

@@ -6,87 +6,114 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 public class SearchServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+
+    /* ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒ—ãƒ¼ãƒ«ã®è¨­å®š START */
+        //ãƒ‡ãƒ¼ã‚¿ã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+        DataSource ds;
+
+        // åˆæœŸåŒ–å‡¦ç†
+        public void init() throws ServletException {
+            try {
+                // åˆæœŸã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’å–å¾—
+                InitialContext ic = new InitialContext();
+                // ãƒ«ãƒƒã‚¯ã‚¢ãƒƒãƒ—ã—ã¦ãƒ‡ãƒ¼ã‚¿ã‚½ãƒ¼ã‚¹ã‚’å–å¾—
+                ds = (DataSource) ic.lookup("java:comp/env/jdbc/search");
+            } catch (Exception e) {
+
+            }
+        }
+	/* ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒ—ãƒ¼ãƒ«ã®è¨­å®š END */
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// DBŠÖ˜A‚Ì‰Šúİ’è
+		// DBé–¢é€£ã®åˆæœŸè¨­å®š
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
-		// •¶šƒR[ƒh‚Ìİ’è
+		// æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®è¨­å®š
 		request.setCharacterEncoding("utf-8");
 
-		// db_index.jsp‚Å“ü—Í‚µ‚½name‚Ìæ“¾
+		// db_index.jspã§å…¥åŠ›ã—ãŸnameã®å–å¾—
 		String name = request.getParameter("name");
 
-		// db_index.jsp‚Å“ü—Í‚µ‚½id‚Ìæ“¾
+		// db_index.jspã§å…¥åŠ›ã—ãŸidã®å–å¾—
 		String id = request.getParameter("id");
 
-		// db_index.jsp‚Å“ü—Í‚µ‚½sei‚Ìæ“¾
+		// db_index.jspã§å…¥åŠ›ã—ãŸseiã®å–å¾—
 		String sei = request.getParameter("sei");
 
-		// db_index.jsp‚Å“ü—Í‚µ‚½nen‚Ìæ“¾
+		// db_index.jspã§å…¥åŠ›ã—ãŸnenã®å–å¾—
 		String nen = request.getParameter("nen");
 		
 	
 		try {
-			// JDBC Driver ‚Ì“o˜^
-			Class.forName("com.mysql.jdbc.Driver");
-			// Connection‚Ìì¬
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/company_db?serverTimezone=UTC&useSSL=false",
-					"suser", "spass");
+//			// JDBC Driver ã®ç™»éŒ²
+//			Class.forName("com.mysql.jdbc.Driver");
+//			// Connectionã®ä½œæˆ
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/company_db?serverTimezone=UTC&useSSL=false",
+//					"suser", "spass");
 
-			// sql•¶ì¬‚Ì€”õ
+
+			/* ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒ—ãƒ¼ãƒ«ã®è¨­å®š START */
+
+			// ãƒ‡ãƒ¼ã‚¿ã‚½ãƒ¼ã‚¹ã‹ã‚‰Connectionã‚’å–å¾—
+			conn = ds.getConnection();
+
+			/* ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒ—ãƒ¼ãƒ«ã®è¨­å®š END */
+			
+			// sqlæ–‡ä½œæˆã®æº–å‚™
 			StringBuffer sql = new StringBuffer();
 
-			// sql•¶ ‚Ìì¬iname‚©‚çj
+			// sqlæ–‡ ã®ä½œæˆï¼ˆnameã‹ã‚‰ï¼‰
 			sql.append("select id, name, sei, nen, address from shain_table where name like '%");
 			sql.append(name + "%'");
 
-			// id‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’Ç‰Á‚·‚é
+			// idãŒé¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€è¿½åŠ ã™ã‚‹
 			if (id != "") {
 				sql.append("and id ='" + id + "'");
 			}
 
-			// sei‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’Ç‰Á‚·‚é
+			// seiãŒé¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€è¿½åŠ ã™ã‚‹
 			if (sei != "") {
 				sql.append("and sei ='" + sei + "'");
 			}
 
-			// nen‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’Ç‰Á‚·‚é
+			// nenãŒé¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€è¿½åŠ ã™ã‚‹
 			if (nen != "") {
 				sql.append("and nen ='" + nen + "'");
 			}
 
-			// sql•¶‚ğ•\¦
+			// sqlæ–‡ã‚’è¡¨ç¤º
 			System.out.println(sql);
 
-			// sql•¶Às€”õ
+			// sqlæ–‡å®Ÿè¡Œæº–å‚™
 			pstmt = conn.prepareStatement(new String(sql));
 
-			// sql•¶Às
+			// sqlæ–‡å®Ÿè¡Œ
 			pstmt.execute();
 
-			// ÀsŒ‹‰Ê‚ğAResultSetƒNƒ‰ƒX‚É‘ã“ü
+			// å®Ÿè¡Œçµæœã‚’ã€ResultSetã‚¯ãƒ©ã‚¹ã«ä»£å…¥
 			rset = pstmt.executeQuery();
 
-			// ‘JˆÚƒy[ƒW‚ÖAˆø“n‚µiAttribute‚Å’Ç‰Á‚·‚éj
+			// é·ç§»ãƒšãƒ¼ã‚¸ã¸ã€å¼•æ¸¡ã—ï¼ˆAttributeã§è¿½åŠ ã™ã‚‹ï¼‰
 			request.setAttribute("kekka", rset);
 
-			// db_search.jsp‚Ö‘JˆÚ
+			// db_search.jspã¸é·ç§»
 			request.getRequestDispatcher("/db_search.jsp").forward(request, response);
 
-			// g—p‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğI—¹‚³‚¹‚é
+			// ä½¿ç”¨ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’çµ‚äº†ã•ã›ã‚‹
 			rset.close();
 			pstmt.close();
 			conn.close();
@@ -94,14 +121,14 @@ public class SearchServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			
-			// sql•¶‚ÌÀs‚ÉƒGƒ‰[‚¾‚Á‚½ê‡
-			String status ="ŒŸõ‚É¸”s‚µ‚Ü‚µ‚½BŠÇ—Ò‚É˜A—‚µ‚Ä‚­‚¾‚³‚¢B";					
+			// sqlæ–‡ã®å®Ÿè¡Œæ™‚ã«ã‚¨ãƒ©ãƒ¼ã ã£ãŸå ´åˆ
+			String status ="æ¤œç´¢ã«å¤±æ•—ã—ã¾ã—ãŸã€‚ç®¡ç†è€…ã«é€£çµ¡ã—ã¦ãã ã•ã„ã€‚";					
 			request.setAttribute("status", status);
 			request.getRequestDispatcher("/db_result.jsp").forward(request, response);
 
 		} finally {
 			try {
-				// finally‚ÅDB‚Æ‚ÌÚ‘±‚ğØ’f
+				// finallyã§DBã¨ã®æ¥ç¶šã‚’åˆ‡æ–­
 				conn.close();
 			} catch (Exception e) {
 			}
