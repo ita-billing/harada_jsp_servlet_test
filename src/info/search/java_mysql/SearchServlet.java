@@ -84,9 +84,6 @@ public class SearchServlet extends HttpServlet {
 			// IDの降順に並び替え
 			sql.append("ORDER BY id");
 
-			// sql文を表示
-			// System.out.println(sql);
-
 			// sql文実行準備
 			pstmt = conn.prepareStatement(new String(sql));
 
@@ -101,11 +98,6 @@ public class SearchServlet extends HttpServlet {
 
 			// db_search.jspへ遷移
 			request.getRequestDispatcher("/db_search.jsp").forward(request, response);
-
-			// 使用したオブジェクトを終了させる
-			rset.close();
-			pstmt.close();
-			conn.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();

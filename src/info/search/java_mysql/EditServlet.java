@@ -5,7 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class EditServlet extends HttpServlet {
 
@@ -48,12 +47,13 @@ public class EditServlet extends HttpServlet {
             break;
 
         
-        // 変更する場合
+        // 編集画面に遷移
         case "change":
         	request.setAttribute("shain", shain);
         	request.getRequestDispatcher("/db_change.jsp").forward(request, response);
         	return;
 
+        // 変更する場合
         case "update":
         	if (shain.updateData() == true) {
         		status = "更新に成功しました。";

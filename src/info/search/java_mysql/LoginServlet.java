@@ -96,20 +96,15 @@ public class LoginServlet extends HttpServlet  {
 
 					// db_index.jspへ遷移
 					request.getRequestDispatcher("/db_index.jsp").forward(request, response);
-
-					// 使用したオブジェクトを終了させる
-					rset.close();
-					pstmt.close();
-					conn.close();
 			
 				}else{				
 					// 該当データなし
 					status ="該当するユーザーが見つかりませんでした。";
 				    request.setAttribute("status", status);
 				    request.getRequestDispatcher("/db_login.jsp").forward(request, response);
-				    rset.close();
-				    pstmt.close();
-				    conn.close();
+				    //rset.close();
+				    //pstmt.close();
+				    //conn.close();
 
 				    }
 

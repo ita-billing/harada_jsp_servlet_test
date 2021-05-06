@@ -36,10 +36,9 @@ public class ShainBeans {
     	setNen(request.getParameter("nen"));
     	setAddress(request.getParameter("address"));
 
+    	// セッションに設定されている値を取得
     	HttpSession session = request.getSession(true);
-    	session.getAttribute("username");
-
-    	setUsername(request.getParameter("username"));
+    	setUsername((String)session.getAttribute("username"));
     }
 
     // データベースへのアクション
@@ -163,7 +162,7 @@ public class ShainBeans {
 
 			// sql文 の作成
 			String sql = "UPDATE SHAIN_TABLE SET " 
-			        + "name = '" + name + "', sei = '" + sei + "', nen = '" + nen + "', address ='" + address + "', updateuser = 'change', updatetime = now() "
+			        + "name = '" + name + "', sei = '" + sei + "', nen = '" + nen + "', address ='" + address + "', updateuser = '" + username + "', updatetime = now() "
 					+ "WHERE id = '" + id + "'";
 
 			// データベース接続＆ｓｑｌの実行
