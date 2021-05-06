@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
+encoding//WebContent/db_index.jsp=UTF-8
 encoding//src/info/search/java_mysql/EditServlet.java=UTF-8
+encoding//src/info/search/java_mysql/LoginServlet.java=UTF-8
+encoding//src/info/search/java_mysql/LogoutServlet.java=UTF-8
 encoding//src/info/search/java_mysql/SearchServlet.java=UTF-8
 encoding//src/info/search/java_mysql/ShainBeans.java=UTF-8
 encoding//src/info/servletTest/LoginServlet.java=MS932

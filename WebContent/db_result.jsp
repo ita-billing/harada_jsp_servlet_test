@@ -5,14 +5,13 @@
 <title>処理結果</title>
 </head>
 <body>
-	<br>
+    <h2>【処理結果】</h2>
 
 	<%
-		String status = (String) request.getAttribute("status");
+	  String status = (String) request.getAttribute("status");
+	  String username = (String)session.getAttribute("username");
 	%>
 
-	<br>
-	<br>
 	<%=status%>
 	<br>
 	<br>

@@ -9,8 +9,10 @@
 	<br>
 
 	<%
-		ResultSet rset = (ResultSet) request.getAttribute("kekka");
+	  ResultSet rset = (ResultSet) request.getAttribute("kekka");
+	  String name = (String)session.getAttribute( "name" );
 	%>
+
 	<table border="1">
 		<tr bgcolor="#cccccc">
 			<td><b>ID</b></td>
@@ -48,7 +50,6 @@
 			}
 		%>
 	</table>
-
 	<br>
 
 	<a href="./db_index.jsp">トップに戻る</a>

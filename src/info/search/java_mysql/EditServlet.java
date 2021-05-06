@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class EditServlet extends HttpServlet {
 
@@ -20,7 +21,7 @@ public class EditServlet extends HttpServlet {
         String mode = request.getParameter("mode");
 
         // 実行ステータスの宣言
-        String status = "成功しました";
+        String status = "";
 
         // JavaBeansの初期化
         ShainBeans shain = new ShainBeans(request);
@@ -30,15 +31,19 @@ public class EditServlet extends HttpServlet {
         // 登録する場合
         case "add":
         	// 失敗した場合
-        	if (shain.addData() == false) {
-                status = "失敗しました";
+        	if (shain.addData() == true) {
+                status = "登録に成功しました。";
+            }else{
+            	status = "登録に失敗しました。登録内容が正しいか、再確認してください。";
             }
             break;
 
         // 削除する場合
         case "delete":
-            if (shain.deleteData() == false) {
-            	status = "失敗しました";
+            if (shain.deleteData() == true) {
+            	status = "削除に成功しました。";
+            }else{
+            	status = "削除に失敗しました。削除対象を再確認してください。";
             }
             break;
 
@@ -49,10 +54,11 @@ public class EditServlet extends HttpServlet {
         	request.getRequestDispatcher("/db_change.jsp").forward(request, response);
         	return;
 
-        // 変更の確定
-        case "del_add":
-        	if (!(shain.deleteData() && shain.addData())) {
-        		status = "失敗しました";
+        case "update":
+        	if (shain.updateData() == true) {
+        		status = "更新に成功しました。";
+        	}else{
+        		status = "更新に失敗しました。更新内容が正しいか、再確認してください。";
         	}
         	break;
         }      	

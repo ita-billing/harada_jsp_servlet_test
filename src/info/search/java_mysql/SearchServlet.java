@@ -2,7 +2,6 @@ package info.search.java_mysql;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -17,7 +16,6 @@ public class SearchServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    /* コネクションプールの設定 START */
         //データソースの作成
         DataSource ds;
 
@@ -32,7 +30,6 @@ public class SearchServlet extends HttpServlet {
 
             }
         }
-	/* コネクションプールの設定 END */
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -59,44 +56,36 @@ public class SearchServlet extends HttpServlet {
 		
 	
 		try {
-//			// JDBC Driver の登録
-//			Class.forName("com.mysql.jdbc.Driver");
-//			// Connectionの作成
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/company_db?serverTimezone=UTC&useSSL=false",
-//					"suser", "spass");
-
-
-			/* コネクションプールの設定 START */
-
 			// データソースからConnectionを取得
 			conn = ds.getConnection();
-
-			/* コネクションプールの設定 END */
 			
 			// sql文作成の準備
 			StringBuffer sql = new StringBuffer();
 
 			// sql文 の作成（nameから）
-			sql.append("select id, name, sei, nen, address from shain_table where name like '%");
+			sql.append("SELECT id, name, sei, nen, address FROM shain_table WHERE name LIKE '%");
 			sql.append(name + "%'");
 
 			// idが選択されている場合は、追加する
 			if (id != "") {
-				sql.append("and id ='" + id + "'");
+				sql.append("AND id ='" + id + "' ");
 			}
 
 			// seiが選択されている場合は、追加する
 			if (sei != "") {
-				sql.append("and sei ='" + sei + "'");
+				sql.append("AND sei ='" + sei + "' ");
 			}
 
 			// nenが選択されている場合は、追加する
 			if (nen != "") {
-				sql.append("and nen ='" + nen + "'");
+				sql.append("AND nen ='" + nen + "' ");
 			}
+			
+			// IDの降順に並び替え
+			sql.append("ORDER BY id");
 
 			// sql文を表示
-			System.out.println(sql);
+			// System.out.println(sql);
 
 			// sql文実行準備
 			pstmt = conn.prepareStatement(new String(sql));
